@@ -82,12 +82,15 @@
     .success-list { display: grid; gap: 12px; }
     .stack-list { display: grid; gap: 16px; }
     .plan-header-right { color: var(--accent); font-weight: 700; }
-    .hero-line { margin-top: 8px; }
-    .brand-lockup { display: flex; align-items: center; gap: 14px; }
+    .hero-line { margin-top: 0; }
+    .brand-lockup { display: flex; align-items: flex-start; gap: 14px; }
+    .brand-text { display: grid; gap: 4px; }
     /* h1 traegt sonst seinen Standard-Abstand nach unten in die Flexbox und
        drueckt das Logo optisch tiefer als den Schriftzug */
     .brand-lockup h1 { margin: 0; line-height: 1.1; }
-    .brand-mark { flex: 0 0 auto; width: 62px; height: 44px; display: block; }
+    /* Logo mittig zur Titelzeile, nicht zum ganzen Textblock */
+    .brand-lockup .brand-mark { margin-top: -4px; }
+    .brand-mark { flex: 0 0 auto; width: 53px; height: 44px; display: block; }
     .date-inline { display: flex; align-items: center; gap: 12px; }
     .date-inline .date-display { flex: 1; }
     .week-chip { white-space: nowrap; font-weight: 700; color: var(--accent); }
@@ -204,10 +207,12 @@
         <div>
           <div class="brand-lockup">
             <img class="brand-mark" src="crossnexus_logo.png" alt="CrossNexus"
-                 width="240" height="172">
-            <h1>Chancenplaner 2026</h1>
+                 width="209" height="172">
+            <div class="brand-text">
+              <h1>Chancenplaner 2026</h1>
+              <div class="plan-header-right hero-line">ICH bestimme über mein Leben – und nicht andere</div>
+            </div>
           </div>
-          <div class="plan-header-right hero-line">ICH bestimme über mein Leben – und nicht andere</div>
         </div>
         <div class="header-actions">
           <button class="ghost week-toggle" id="weekToggleBtn" type="button">Woche planen</button>
