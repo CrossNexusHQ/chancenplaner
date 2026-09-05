@@ -195,7 +195,7 @@ class OnlineArtifactsTests(unittest.TestCase):
 
     def test_strategy_week_navigation_keeps_kw_label_and_arrows_together_on_the_right(self):
         html = INDEX.read_text(encoding='utf-8')
-        self.assertIn('.weekly-focus-section { display: grid; gap: 12px; margin-top: 6px; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255, 255, 255, 0.03); }', html)
+        self.assertIn('.weekly-focus-section { display: grid; gap: 12px; margin-top: 6px; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: var(--tint); }', html)
         self.assertIn('.weekly-focus-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }', html)
         self.assertIn('.weekly-focus-title { margin: 0; color: var(--accent); font-size: 1rem; }', html)
         self.assertIn('.week-block-nav { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin-bottom: 0; }', html)
@@ -221,7 +221,7 @@ class OnlineArtifactsTests(unittest.TestCase):
         self.assertIn('<label for="valuesBlock">Werte</label>', html)
         self.assertIn('<div id="valuesBlock" class="note-editor readonly-mirror" contenteditable="false"></div>', html)
         self.assertIn('.readonly-mirror {', html)
-        self.assertIn('background: rgba(255, 255, 255, 0.03)', html)
+        self.assertIn('background: var(--tint)', html)
         self.assertIn('cursor: default;', html)
         self.assertIn('function syncMainCompassMirrors()', html)
         self.assertIn("fields.identityBlock.value = fields.yearCompassIdentity.value;", html)
@@ -473,6 +473,44 @@ class OnlineArtifactsTests(unittest.TestCase):
         html = INDEX.read_text(encoding='utf-8')
         self.assertNotIn('signupBtn', html)
         self.assertNotIn('auth.signUp(', html)
+
+    def test_brand_palette_replaces_old_colors(self):
+        html = INDEX.read_text(encoding='utf-8')
+        for farbe in ['#0A1324', '#6237A0', '#D95832', '#D6A84B', '#F5F6F8']:
+            self.assertIn(farbe, html, f'Brand-Farbe {farbe} fehlt')
+        for alt in ['#22c55e', '#0f172a', '#334155', '#052e16', '#ef4444',
+                    '34, 197, 94', '239, 68, 68']:
+            self.assertNotIn(alt, html, f'alte Farbe {alt} noch vorhanden')
+
+    def test_brand_font_is_arial_with_android_fallback(self):
+        html = INDEX.read_text(encoding='utf-8')
+        self.assertIn("font-family: Arial, Helvetica, 'Liberation Sans', sans-serif", html)
+
+    def test_light_mode_defines_every_dark_mode_token(self):
+        """Ein im Light Mode vergessenes Token wuerde dort die Dark-Farbe behalten."""
+        import re
+        html = INDEX.read_text(encoding='utf-8')
+        bloecke = re.findall(r':root\s*\{(.*?)\}', html, re.S)
+        self.assertGreaterEqual(len(bloecke), 2, 'Light-Mode-Block fehlt')
+        namen = lambda b: {m for m, _ in re.findall(r'(--[\w-]+):\s*([^;]+);', b)}
+        fehlend = namen(bloecke[0]) - namen(bloecke[1])
+        self.assertEqual(fehlend, set(), f'im Light Mode nicht definiert: {sorted(fehlend)}')
+
+    def test_colors_are_never_set_from_javascript(self):
+        """Inline-Styles wuerden die Media Query aushebeln und den Light Mode brechen."""
+        html = INDEX.read_text(encoding='utf-8')
+        js = html[html.index('<script>', html.index('</style>')):]
+        for verboten in ['style.background', 'style.color', 'style.borderColor']:
+            self.assertNotIn(verboten, js, f'{verboten} setzt Farbe am CSS vorbei')
+        self.assertIn("statusBox.classList.toggle('is-error', isError);", html)
+        self.assertIn("weekToggleBtn.classList.toggle('is-active', view === 'weekly');", html)
+
+    def test_crossnexus_symbol_and_favicon_present(self):
+        html = INDEX.read_text(encoding='utf-8')
+        self.assertIn('class="brand-mark"', html)
+        self.assertIn('aria-label="CrossNexus"', html)
+        self.assertIn('<link rel="icon"', html)
+        self.assertIn('Komplex denken. Klar gestalten.', html)
 
     def test_config_has_placeholders(self):
         js = CONFIG.read_text(encoding='utf-8')

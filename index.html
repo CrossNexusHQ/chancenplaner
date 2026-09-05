@@ -4,32 +4,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chancenplaner 2026</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%236237A0%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23D95832%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M8%2016%20C%2020%2016%2C%2026%2032%2C%2032%2032%20C%2038%2032%2C%2044%2048%2C%2056%2048%22%20fill%3D%22none%22%20stroke%3D%22url%28%23g%29%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M8%2048%20C%2020%2048%2C%2026%2032%2C%2032%2032%20C%2038%2032%2C%2044%2016%2C%2056%2016%22%20fill%3D%22none%22%20stroke%3D%22url%28%23g%29%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%225%22%20fill%3D%22%23D6A84B%22%2F%3E%3C%2Fsvg%3E">
+  <meta name="theme-color" content="#0A1324" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#F5F6F8" media="(prefers-color-scheme: light)">
   <style>
+    /* CrossNexus Brand System v1.1 — Komplex denken. Klar gestalten.
+       Deep Navy #0A1324 · Jupiter Violet #6237A0 · Ember Orange #D95832
+       Warm Gold #D6A84B · Soft White #F5F6F8
+       Violett/Orange/Gold sind je nach Modus getoent, weil die reinen Werte
+       auf dem jeweiligen Grund unter 4.5:1 Kontrast fallen wuerden. */
     :root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --panel-2: #1f2937;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #22c55e;
-      --border: #334155;
-      --danger: #ef4444;
+      --bg: #0A1324;
+      --surface: #111C33;
+      --surface-2: #16223D;
+      --text: #F5F6F8;
+      --muted: #A8B0BF;
+      --border: #24304A;
+      --accent: #997DC1;
+      --accent-fill: #6237A0;
+      --accent-on-fill: #F5F6F8;
+      --activation: #D95832;
+      --activation-on: #0A1324;
+      --highlight: #D6A84B;
+      --tint: rgba(245, 246, 248, 0.04);
+      --accent-soft: rgba(98, 55, 160, 0.20);
+      --accent-ring: rgba(153, 125, 193, 0.30);
+      --highlight-soft: rgba(214, 168, 75, 0.12);
+      --highlight-edge: rgba(214, 168, 75, 0.40);
+      --activation-soft: rgba(217, 88, 50, 0.12);
+      --activation-edge: rgba(217, 88, 50, 0.40);
+      --shadow: rgba(0, 0, 0, 0.30);
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F5F6F8;
+        --surface: #FFFFFF;
+        --surface-2: #EDEFF3;
+        --text: #0A1324;
+        --muted: #4A5568;
+        --border: #D8DCE4;
+        --accent: #6237A0;
+        --accent-fill: #6237A0;
+        --accent-on-fill: #F5F6F8;
+        --activation: #AE4628;
+        --activation-on: #F5F6F8;
+        --highlight: #80652D;
+        --tint: rgba(10, 19, 36, 0.03);
+        --accent-soft: rgba(98, 55, 160, 0.10);
+        --accent-ring: rgba(98, 55, 160, 0.25);
+        --highlight-soft: rgba(128, 101, 45, 0.10);
+        --highlight-edge: rgba(128, 101, 45, 0.35);
+        --activation-soft: rgba(174, 70, 40, 0.10);
+        --activation-edge: rgba(174, 70, 40, 0.35);
+        --shadow: rgba(10, 19, 36, 0.08);
+      }
     }
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(180deg, #020617 0%, #111827 100%); color: var(--text); line-height: 1.55; }
+    body { margin: 0; font-family: Arial, Helvetica, 'Liberation Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.55; }
     .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
-    h1, h2, h3 { margin-top: 0; }
-    .card { background: rgba(17, 24, 39, 0.92); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); }
+    h1, h2, h3 { margin-top: 0; font-weight: 700; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px var(--shadow); }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     label { display: block; font-weight: 600; margin-bottom: 8px; }
-    input[type="text"], input[type="password"], select, .note-editor { width: 100%; background: var(--panel-2); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font: inherit; }
+    input[type="text"], input[type="password"], select, .note-editor { width: 100%; background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font: inherit; }
     .note-editor { min-height: calc(1.55em + 26px); resize: none; overflow-y: visible; white-space: pre-wrap; word-break: break-word; outline: none; font-style: italic; }
     .note-editor * { background: transparent !important; color: inherit !important; text-shadow: none !important; -webkit-text-stroke: 0 !important; text-stroke: 0 !important; }
-    .note-editor:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.18); }
+    .note-editor:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-ring); }
     .small .note-editor { min-height: calc(1.55em + 26px); }
-    .readonly-mirror { background: rgba(255, 255, 255, 0.03); cursor: default; }
+    .readonly-mirror { background: var(--tint); cursor: default; }
     .meta { color: var(--muted); font-size: 0.95rem; }
-    .law-box { border-left: 5px solid var(--accent); background: rgba(34, 197, 94, 0.08); padding: 18px; border-radius: 12px; }
+    .law-box { border-left: 5px solid var(--accent-fill); background: var(--accent-soft); padding: 18px; border-radius: 12px; }
     .law-title { font-size: 1.35rem; font-weight: 800; margin: 0 0 12px; color: var(--text); }
     .law-text { white-space: pre-wrap; color: var(--text); }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
@@ -39,25 +83,31 @@
     .stack-list { display: grid; gap: 16px; }
     .plan-header-right { color: var(--accent); font-weight: 700; }
     .hero-line { margin-top: 8px; }
+    .brand-lockup { display: flex; align-items: center; gap: 14px; }
+    .brand-mark { flex: 0 0 auto; width: 56px; height: 40px; display: block; }
+    .brand-principle { color: var(--muted); font-size: 0.85rem; margin-top: 2px; letter-spacing: 0.02em; }
     .date-inline { display: flex; align-items: center; gap: 12px; }
     .date-inline .date-display { flex: 1; }
     .week-chip { white-space: nowrap; font-weight: 700; color: var(--accent); }
-    .weekly-focus-section { display: grid; gap: 12px; margin-top: 6px; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255, 255, 255, 0.03); }
+    .weekly-focus-section { display: grid; gap: 12px; margin-top: 6px; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: var(--tint); }
     .weekly-focus-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .weekly-focus-title { margin: 0; color: var(--accent); font-size: 1rem; }
     .week-block-nav { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin-bottom: 0; }
     .week-block-nav .ghost { padding: 8px 12px; }
     .week-block-nav .week-label-strong { font-size: 1rem; }
     .week-block-nav-actions { display: inline-flex; align-items: center; gap: 10px; }
-    button { border: 0; border-radius: 10px; padding: 12px 16px; font: inherit; font-weight: 700; cursor: pointer; }
-    .ghost { background: #334155; color: var(--text); }
-    .status { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: rgba(34, 197, 94, 0.10); border: 1px solid rgba(34, 197, 94, 0.35); color: #dcfce7; display: none; }
+    button { border: 0; border-radius: 10px; padding: 12px 16px; font: inherit; font-weight: 700; cursor: pointer; background: var(--accent-fill); color: var(--accent-on-fill); }
+    .ghost { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+    .status { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: var(--highlight-soft); border: 1px solid var(--highlight-edge); color: var(--highlight); display: none; }
+    .status.is-visible { display: block; }
+    .status.is-error { background: var(--activation-soft); border-color: var(--activation-edge); color: var(--activation); }
     .hidden-date { display: none; }
     .date-display { font-size: 1.05rem; }
     .prompt { font-weight: 700; margin: 0 0 12px; }
     .header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
     .header-actions { display: grid; gap: 10px; align-items: stretch; min-width: 170px; }
     .week-toggle, .year-toggle { min-width: 156px; }
+    .week-toggle.is-active, .year-toggle.is-active { background: var(--activation); color: var(--activation-on); border-color: var(--activation); }
     .subtle-open-btn { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 8px 10px; font-size: 0.9rem; }
     .subtle-open-btn:hover { color: var(--text); border-color: var(--accent); }
     .goal-detail-page { display: none; }
@@ -68,8 +118,8 @@
     .year-questions { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
     .year-questions-single { grid-template-columns: 1fr; }
     .year-section-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-    .year-section-btn { background: #334155; color: var(--text); }
-    .year-section-btn.active { background: var(--accent); color: #052e16; }
+    .year-section-btn { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+    .year-section-btn.active { background: var(--accent-fill); color: var(--accent-on-fill); border-color: var(--accent-fill); }
     .year-panel { display: none; }
     .year-panel.active { display: grid; }
     .year-kompass-grid { display: grid; gap: 14px; }
@@ -89,7 +139,7 @@
     .week-title-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: flex-end; }
     .weekly-tips-panel { display: none; }
     .area-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
-    .area-open-btn { white-space: nowrap; background: #334155; color: var(--text); }
+    .area-open-btn { white-space: nowrap; background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
     .area-detail-view { display: none; }
     .area-detail-header { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
     .area-detail-stack { display: grid; gap: 16px; }
@@ -150,7 +200,26 @@
     <div class="card">
       <div class="header-row">
         <div>
-          <h1>Chancenplaner 2026</h1>
+          <div class="brand-lockup">
+            <svg class="brand-mark" viewBox="4 12 56 40" role="img" aria-label="CrossNexus">
+              <title>CrossNexus</title>
+              <defs>
+                <linearGradient id="nexusGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#6237A0"/>
+                  <stop offset="100%" stop-color="#D95832"/>
+                </linearGradient>
+              </defs>
+              <path d="M8 16 C 20 16, 26 32, 32 32 C 38 32, 44 48, 56 48"
+                    fill="none" stroke="url(#nexusGrad)" stroke-width="5" stroke-linecap="round"/>
+              <path d="M8 48 C 20 48, 26 32, 32 32 C 38 32, 44 16, 56 16"
+                    fill="none" stroke="url(#nexusGrad)" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="32" cy="32" r="4" fill="#D6A84B"/>
+            </svg>
+            <div>
+              <h1>Chancenplaner 2026</h1>
+              <div class="brand-principle">Komplex denken. Klar gestalten.</div>
+            </div>
+          </div>
           <div class="plan-header-right hero-line">ICH bestimme über mein Leben – und nicht andere</div>
         </div>
         <div class="header-actions">
@@ -1023,13 +1092,11 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       });
     }
     function showStatus(message, isError = false) {
-      statusBox.style.display = 'block';
       statusBox.textContent = message;
-      statusBox.style.background = isError ? 'rgba(239, 68, 68, 0.10)' : 'rgba(34, 197, 94, 0.10)';
-      statusBox.style.borderColor = isError ? 'rgba(239, 68, 68, 0.35)' : 'rgba(34, 197, 94, 0.35)';
-      statusBox.style.color = isError ? '#fecaca' : '#dcfce7';
+      statusBox.classList.toggle('is-error', isError);
+      statusBox.classList.add('is-visible');
       clearTimeout(showStatus._timer);
-      showStatus._timer = setTimeout(() => { statusBox.style.display = 'none'; }, 1800);
+      showStatus._timer = setTimeout(() => { statusBox.classList.remove('is-visible'); }, 1800);
     }
     function getRequestBody(options = {}) {
       if (!options.body) return {};
@@ -1548,10 +1615,8 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
         setAreaDetailVisible(null);
         setWeeklyTipsVisible(false);
       }
-      weekToggleBtn.style.background = view === 'weekly' ? 'var(--accent)' : '#334155';
-      weekToggleBtn.style.color = view === 'weekly' ? '#052e16' : 'var(--text)';
-      yearPlanToggleBtn.style.background = view === 'year' ? 'var(--accent)' : '#334155';
-      yearPlanToggleBtn.style.color = view === 'year' ? '#052e16' : 'var(--text)';
+      weekToggleBtn.classList.toggle('is-active', view === 'weekly');
+      yearPlanToggleBtn.classList.toggle('is-active', view === 'year');
     }
     let strategyAutosaveTimer;
     let dailyAutosaveTimer;

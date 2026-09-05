@@ -22,6 +22,19 @@ cd /tmp/cp_push && git push origin main
 git ls-remote origin main   # unbedingt pruefen: der Push scheitert sonst lautlos
 ```
 
+## Design
+Die App folgt dem **CrossNexus Brand System v1.1**
+(`/Volumes/2_Projekte/H_Chancenplaner/crossnexus_brand_system.md`).
+
+- Schrift: Arial (Fallback `Liberation Sans` für Android)
+- Farben nur über die CSS-Variablen in `:root` — Dark Mode ist Standard,
+  der Light Mode folgt der Geräteeinstellung über `prefers-color-scheme`
+- Violett, Orange und Gold sind je Modus getönt, weil die reinen Markenwerte
+  auf dem jeweiligen Grund unter 4.5:1 Kontrast fallen würden. Alle 18
+  Text-auf-Grund-Kombinationen liegen geprüft darüber.
+- Farben nie aus dem JavaScript setzen — Inline-Styles hebeln den Light Mode
+  aus. Zustände über CSS-Klassen schalten (`is-error`, `is-active`).
+
 ## Wichtige Dateien
 - `index.html` – die App, einzige Quelldatei
 - `config.js` – aktive Supabase-Konfiguration
