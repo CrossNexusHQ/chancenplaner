@@ -3,10 +3,24 @@
 Ziel: dieselbe App über eine feste URL auf Mac, Samsung und anderen Geräten nutzen.
 
 ## Aktiver Stand
-- Live-URL: `https://t22k7jz5vb-ship-it.github.io/chancenplaner-online/`
+- Live-URL: `https://crossnexushq.github.io/chancenplaner/`
 - Hosting: GitHub Pages
 - Daten + Login: Supabase
-- GitHub-Repo: `git@github.com:t22k7jz5vb-ship-it/chancenplaner-online.git`
+- GitHub-Repo: `git@github-crossnexus:CrossNexusHQ/chancenplaner.git`
+- Alte URL (Rückfallebene, läuft vorerst weiter):
+  `https://t22k7jz5vb-ship-it.github.io/chancenplaner-online/`
+
+Hinweis zum Pushen: Der SSH-Host heisst `github-crossnexus`, nicht `github.com` —
+das steuert über `~/.ssh/config`, welches der beiden GitHub-Konten genutzt wird.
+Das Projekt liegt auf einer SMB-NAS-Freigabe, dort stürzt `git push` mit einem
+Bus error ab (Git kann seine Packdatei über SMB nicht per mmap lesen). Bis das
+Projekt auf einer internen SSD liegt, deshalb so pushen:
+
+```bash
+cp -R /Volumes/2_Projekte/H_Chancenplaner/online_app /tmp/cp_push
+cd /tmp/cp_push && git push origin main
+git ls-remote origin main   # unbedingt pruefen: der Push scheitert sonst lautlos
+```
 
 ## Wichtige Dateien
 - `index.html` – die App, einzige Quelldatei
