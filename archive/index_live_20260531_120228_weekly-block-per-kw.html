@@ -42,10 +42,7 @@
     .date-inline { display: flex; align-items: center; gap: 12px; }
     .date-inline .date-display { flex: 1; }
     .week-chip { white-space: nowrap; font-weight: 700; color: var(--accent); }
-    .weekly-focus-section { display: grid; gap: 12px; margin-top: 6px; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255, 255, 255, 0.03); }
-    .weekly-focus-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .weekly-focus-title { margin: 0; color: var(--accent); font-size: 1rem; }
-    .week-block-nav { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin-bottom: 0; }
+    .week-block-nav { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
     .week-block-nav .ghost { padding: 8px 12px; }
     .week-block-nav .week-label-strong { font-size: 1rem; }
     .week-block-nav-actions { display: inline-flex; align-items: center; gap: 10px; }
@@ -123,25 +120,9 @@
         </div>
         <div class="auth-actions">
           <button type="submit" id="loginBtn">Einloggen</button>
-          <button type="button" class="ghost" id="forgotPasswordBtn">Passwort vergessen</button>
+          <button type="button" class="ghost" id="signupBtn">Account anlegen</button>
         </div>
       </form>
-    </div>
-
-    <div class="card auth-card hidden" id="recoveryCard">
-      <div>
-        <h2 style="margin-bottom:8px;">Neues Passwort setzen</h2>
-        <div class="muted">Vergib jetzt ein neues Passwort. Danach bist du direkt eingeloggt.</div>
-      </div>
-      <div class="auth-row">
-        <div>
-          <label for="newPassword">Neues Passwort</label>
-          <input id="newPassword" type="password" autocomplete="new-password">
-        </div>
-      </div>
-      <div class="auth-actions">
-        <button type="button" id="setNewPasswordBtn">Passwort speichern</button>
-      </div>
     </div>
 
     <div class="status" id="statusBox"></div>
@@ -183,40 +164,50 @@
             <div id="valuesBlock" class="note-editor readonly-mirror" contenteditable="false"></div>
           </div>
           <div class="small">
-            <label for="goalLong10Mirror">10-Jahres-Ziele – Kurzfassung</label>
-            <div id="goalLong10Mirror" class="note-editor readonly-mirror" contenteditable="false"></div>
-          </div>
-          <div class="small">
-            <label for="goalMid25Mirror">2–5-Jahres-Ziele – Kurzfassung</label>
-            <div id="goalMid25Mirror" class="note-editor readonly-mirror" contenteditable="false"></div>
-          </div>
-          <div class="small">
-            <label for="goalShort1Mirror">1-Jahres-Ziele – Kurzfassung</label>
-            <div id="goalShort1Mirror" class="note-editor readonly-mirror" contenteditable="false"></div>
-          </div>
-          <div class="weekly-focus-section">
-            <div class="weekly-focus-header">
-              <h3 class="weekly-focus-title">Wochenfokus</h3>
-              <div class="week-block-nav">
-                <div class="week-label-strong" id="strategyWeekLabel">KW</div>
-                <div class="week-block-nav-actions">
-                  <button type="button" class="ghost" id="strategyWeekPrevBtn">←</button>
-                  <button type="button" class="ghost" id="strategyWeekNextBtn">→</button>
-                </div>
+            <div class="area-row">
+              <div>
+                <label for="goalLong10">10-Jahres-Ziele – Kurzfassung</label>
+                <div id="goalLong10" class="note-editor" contenteditable="true"></div>
               </div>
+              <button type="button" class="subtle-open-btn" id="openTenYearGoalsBtn">Details</button>
             </div>
-            <div class="small">
-              <label for="mottoLong">Motto: (langfr.)</label>
-              <div id="mottoLong" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <div class="area-row">
+              <div>
+                <label for="goalMid25">2–5-Jahres-Ziele – Kurzfassung</label>
+                <div id="goalMid25" class="note-editor" contenteditable="true"></div>
+              </div>
+              <button type="button" class="subtle-open-btn" id="openMidTermGoalsBtn">Details</button>
             </div>
-            <div class="small">
-              <label for="focusWeek">Fokus: (diese Woche)</label>
-              <div id="focusWeek" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <div class="area-row">
+              <div>
+                <label for="goalShort1">1-Jahres-Ziele – Kurzfassung</label>
+                <div id="goalShort1" class="note-editor" contenteditable="true"></div>
+              </div>
+              <button type="button" class="subtle-open-btn" id="openShortTermGoalsBtn">Details</button>
             </div>
-            <div class="small">
-              <label for="priorityWeek">Prioritäten dieser Woche</label>
-              <div id="priorityWeek" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="week-block-nav">
+            <div class="week-label-strong" id="strategyWeekLabel">KW</div>
+            <div class="week-block-nav-actions">
+              <button type="button" class="ghost" id="strategyWeekPrevBtn">←</button>
+              <button type="button" class="ghost" id="strategyWeekNextBtn">→</button>
             </div>
+          </div>
+          <div class="small">
+            <label for="mottoLong">Motto: (langfr.)</label>
+            <div id="mottoLong" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <label for="focusWeek">Fokus: (diese Woche)</label>
+            <div id="focusWeek" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <label for="priorityWeek">Prioritäten dieser Woche</label>
+            <div id="priorityWeek" class="note-editor" contenteditable="true"></div>
           </div>
         </div>
       </div>
@@ -270,13 +261,98 @@
       </div>
     </div>
       </div>
+
+      <div class="card goal-detail-page" id="tenYearGoalsDetail">
+        <div class="area-detail-header">
+          <div>
+            <h3>10-Jahres-Ziele</h3>
+            <div class="meta">Aus dem Ziele-Blatt: Datum, Sein, Tun und Haben. Die Kurzfassung steht auf der Hauptseite; hier ist die ausführliche Seite.</div>
+          </div>
+          <button type="button" class="ghost" id="closeTenYearGoalsBtn">Zurück</button>
+        </div>
+        <div class="stack-list">
+          <div class="small">
+            <label for="goal10Date">Datum</label>
+            <input id="goal10Date" type="text">
+          </div>
+          <div class="small">
+            <label for="goal10Being">Sein:</label>
+            <div id="goal10Being" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <label for="goal10Doing">Tun:</label>
+            <div id="goal10Doing" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <label for="goal10Having">Haben:</label>
+            <div id="goal10Having" class="note-editor" contenteditable="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card goal-detail-page" id="midTermGoalsDetail">
+        <div class="area-detail-header">
+          <div>
+            <h3>2–5-Jahres-Ziele</h3>
+            <div class="meta">Aus dem Ziele-Blatt: Datum, Sein, Tun und Haben. Die Kurzfassung steht auf der Hauptseite; hier ist die ausführliche Seite.</div>
+          </div>
+          <button type="button" class="ghost" id="closeMidTermGoalsBtn">Zurück</button>
+        </div>
+        <div class="stack-list">
+          <div class="small">
+            <label for="goalMidDate">Datum</label>
+            <input id="goalMidDate" type="text">
+          </div>
+          <div class="small">
+            <label for="goalMidBeing">Sein:</label>
+            <div id="goalMidBeing" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <label for="goalMidDoing">Tun:</label>
+            <div id="goalMidDoing" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <label for="goalMidHaving">Haben:</label>
+            <div id="goalMidHaving" class="note-editor" contenteditable="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card goal-detail-page" id="shortTermGoalsDetail">
+        <div class="area-detail-header">
+          <div>
+            <h3>1-Jahres-Ziele</h3>
+            <div class="meta">Aus dem Ziele-Blatt: Datum, Sein, Tun und Haben. Die Kurzfassung steht auf der Hauptseite; hier ist die ausführliche Seite.</div>
+          </div>
+          <button type="button" class="ghost" id="closeShortTermGoalsBtn">Zurück</button>
+        </div>
+        <div class="stack-list">
+          <div class="small">
+            <label for="goalShortDate">Datum</label>
+            <input id="goalShortDate" type="text">
+          </div>
+          <div class="small">
+            <label for="goalShortBeing">Sein:</label>
+            <div id="goalShortBeing" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <label for="goalShortDoing">Tun:</label>
+            <div id="goalShortDoing" class="note-editor" contenteditable="true"></div>
+          </div>
+          <div class="small">
+            <label for="goalShortHaving">Haben:</label>
+            <div id="goalShortHaving" class="note-editor" contenteditable="true"></div>
+          </div>
+        </div>
+      </div>
+
+
     <div id="yearPlanningView" class="year-planning-view">
       <div class="card year-card">
         <h2>Jahresplanung</h2>
         <div class="meta">Langfristige Orientierung, Erfolgsfragen und Jahresblöcke.</div>
         <div class="year-section-nav">
           <button type="button" class="year-section-btn active" data-year-section="year-section-compass">Kompass</button>
-          <button type="button" class="year-section-btn" data-year-section="year-section-goals">Ziele</button>
           <button type="button" class="year-section-btn" data-year-section="year-section-guiding">Leitsätze</button>
           <button type="button" class="year-section-btn" data-year-section="year-section-success">Erfolgsfragen</button>
           <button type="button" class="year-section-btn" data-year-section="year-section-lessons">Lehren</button>
@@ -315,47 +391,6 @@
           <div class="small year-block"><label for="year-compass-purpose">Lebenssinn</label><div id="year-compass-purpose" class="note-editor" contenteditable="true"></div></div>
           <div class="small year-block"><label for="year-compass-mission">Mission-Statement</label><div id="year-compass-mission" class="note-editor" contenteditable="true"></div></div>
           <div class="small year-block"><label for="year-compass-values">Werte</label><div id="year-compass-values" class="note-editor" contenteditable="true"></div></div>
-        </div>
-      </div>
-
-      <div class="card year-card year-section year-panel" id="year-section-goals">
-        <h3>Ziele</h3>
-        <div class="stack-list">
-          <div class="small year-block">
-            <label for="goalLong10">10-Jahres-Ziele – Kurzfassung</label>
-            <div id="goalLong10" class="note-editor" contenteditable="true"></div>
-          </div>
-          <div class="grid">
-            <div class="card">
-              <h4>10-Jahres-Ziele</h4>
-              <div class="stack-list">
-                <div class="small"><label for="goal10Date">Datum</label><input id="goal10Date" type="text"></div>
-                <div class="small"><label for="goal10Being">Sein:</label><div id="goal10Being" class="note-editor" contenteditable="true"></div></div>
-                <div class="small"><label for="goal10Doing">Tun:</label><div id="goal10Doing" class="note-editor" contenteditable="true"></div></div>
-                <div class="small"><label for="goal10Having">Haben:</label><div id="goal10Having" class="note-editor" contenteditable="true"></div></div>
-              </div>
-            </div>
-            <div class="card">
-              <h4>2–5-Jahres-Ziele</h4>
-              <div class="stack-list">
-                <div class="small"><label for="goalMid25">2–5-Jahres-Ziele – Kurzfassung</label><div id="goalMid25" class="note-editor" contenteditable="true"></div></div>
-                <div class="small"><label for="goalMidDate">Datum</label><input id="goalMidDate" type="text"></div>
-                <div class="small"><label for="goalMidBeing">Sein:</label><div id="goalMidBeing" class="note-editor" contenteditable="true"></div></div>
-                <div class="small"><label for="goalMidDoing">Tun:</label><div id="goalMidDoing" class="note-editor" contenteditable="true"></div></div>
-                <div class="small"><label for="goalMidHaving">Haben:</label><div id="goalMidHaving" class="note-editor" contenteditable="true"></div></div>
-              </div>
-            </div>
-            <div class="card">
-              <h4>1-Jahres-Ziele</h4>
-              <div class="stack-list">
-                <div class="small"><label for="goalShort1">1-Jahres-Ziele – Kurzfassung</label><div id="goalShort1" class="note-editor" contenteditable="true"></div></div>
-                <div class="small"><label for="goalShortDate">Datum</label><input id="goalShortDate" type="text"></div>
-                <div class="small"><label for="goalShortBeing">Sein:</label><div id="goalShortBeing" class="note-editor" contenteditable="true"></div></div>
-                <div class="small"><label for="goalShortDoing">Tun:</label><div id="goalShortDoing" class="note-editor" contenteditable="true"></div></div>
-                <div class="small"><label for="goalShortHaving">Haben:</label><div id="goalShortHaving" class="note-editor" contenteditable="true"></div></div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -830,7 +865,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     const weeklyDayKeys = ['montag', 'dienstag', 'mittwoch', 'donnerstag', 'freitag', 'samstag', 'sonntag'];
     const ids = {
       date: 'entryDate', displayDate: 'displayDate',
-      mottoLong: 'mottoLong', focusWeek: 'focusWeek', identityBlock: 'identityBlock', purposeBlock: 'purposeBlock', missionBlock: 'missionBlock', valuesBlock: 'valuesBlock', goalLong10Mirror: 'goalLong10Mirror', goalMid25Mirror: 'goalMid25Mirror', goalShort1Mirror: 'goalShort1Mirror', goalLong10: 'goalLong10', goal10Date: 'goal10Date', goal10Being: 'goal10Being', goal10Doing: 'goal10Doing', goal10Having: 'goal10Having', goalMid25: 'goalMid25', goalMidDate: 'goalMidDate', goalMidBeing: 'goalMidBeing', goalMidDoing: 'goalMidDoing', goalMidHaving: 'goalMidHaving', goalShort1: 'goalShort1', goalShortDate: 'goalShortDate', goalShortBeing: 'goalShortBeing', goalShortDoing: 'goalShortDoing', goalShortHaving: 'goalShortHaving', priorityWeek: 'priorityWeek',
+      mottoLong: 'mottoLong', focusWeek: 'focusWeek', identityBlock: 'identityBlock', purposeBlock: 'purposeBlock', missionBlock: 'missionBlock', valuesBlock: 'valuesBlock', goalLong10: 'goalLong10', goal10Date: 'goal10Date', goal10Being: 'goal10Being', goal10Doing: 'goal10Doing', goal10Having: 'goal10Having', goalMid25: 'goalMid25', goalMidDate: 'goalMidDate', goalMidBeing: 'goalMidBeing', goalMidDoing: 'goalMidDoing', goalMidHaving: 'goalMidHaving', goalShort1: 'goalShort1', goalShortDate: 'goalShortDate', goalShortBeing: 'goalShortBeing', goalShortDoing: 'goalShortDoing', goalShortHaving: 'goalShortHaving', priorityWeek: 'priorityWeek',
       chance: 'chance', gratitude: 'gratitude', task: 'task',
       success1: 'success1', success2: 'success2', success3: 'success3', success4: 'success4', success5: 'success5',
       weeklyHealth: 'weeklyHealth', weeklyRelationships: 'weeklyRelationships', weeklyFinances: 'weeklyFinances', weeklyEmotions: 'weeklyEmotions', weeklyPurpose: 'weeklyPurpose',
@@ -866,6 +901,16 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     const closeWeeklyTipsBtn = document.getElementById('closeWeeklyTipsBtn');
     const weeklyViewTitle = document.getElementById('weeklyViewTitle');
     const weeklySundayLabel = document.getElementById('weeklySundayLabel');
+    const dailyMainContent = document.getElementById('dailyMainContent');
+    const openTenYearGoalsBtn = document.getElementById('openTenYearGoalsBtn');
+    const closeTenYearGoalsBtn = document.getElementById('closeTenYearGoalsBtn');
+    const tenYearGoalsDetail = document.getElementById('tenYearGoalsDetail');
+    const openMidTermGoalsBtn = document.getElementById('openMidTermGoalsBtn');
+    const closeMidTermGoalsBtn = document.getElementById('closeMidTermGoalsBtn');
+    const midTermGoalsDetail = document.getElementById('midTermGoalsDetail');
+    const openShortTermGoalsBtn = document.getElementById('openShortTermGoalsBtn');
+    const closeShortTermGoalsBtn = document.getElementById('closeShortTermGoalsBtn');
+    const shortTermGoalsDetail = document.getElementById('shortTermGoalsDetail');
     let currentView = 'daily';
     let isWeeklyViewVisible = false;
     let currentAreaKey = null;
@@ -876,9 +921,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     const authCard = document.getElementById('authCard');
     const appShell = document.getElementById('appShell');
     const loginForm = document.getElementById('loginForm');
-    const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
-    const recoveryCard = document.getElementById('recoveryCard');
-    const setNewPasswordBtn = document.getElementById('setNewPasswordBtn');
+    const signupBtn = document.getElementById('signupBtn');
     const logoutBtn = document.getElementById('logoutBtn');
 
     const supabaseUrl = window.CHANCENPLANER_CONFIG?.supabaseUrl;
@@ -890,17 +933,14 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
     let currentSession = null;
     let appInitialized = false;
-    let recoveryMode = false;
     let strategyDefaults = {};
-    let loadedStrategyEntry = {};
-    let loadedDailyEntry = {};
-    let loadedWeeklyEntry = {};
     const weeklyEntryFields = weeklyDayKeys.flatMap(day => [
       `weekly_${day}_activity`, `weekly_${day}_goal`
     ]);
 
     function todayString() {
-      return isoDate(new Date());
+      const d = new Date();
+      return d.toISOString().slice(0, 10);
     }
     function dayDiff(start, current) {
       const a = new Date(start + 'T00:00:00');
@@ -1048,12 +1088,12 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       await requireSession();
       const { data, error } = await supabaseClient
         .from(table)
-        .select('data, updated_at')
+        .select('data')
         .eq(column, value)
         .maybeSingle();
       if (error) throw error;
       if (!data) throw new Error('not found');
-      return { data: data.data || {}, updatedAt: data.updated_at || null };
+      return data.data || {};
     }
     async function upsertJsonRecord(table, column, value, payload, idValue = null) {
       await requireSession();
@@ -1088,7 +1128,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
           try {
             return await loadJsonRecord('strategy_profiles_v4', 'id', 'default');
           } catch (error) {
-            if (String(error.message).includes('not found')) return { data: {}, updatedAt: null };
+            if (String(error.message).includes('not found')) return {};
             throw error;
           }
         }
@@ -1111,7 +1151,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     function strategyPayload() {
       const purposeText = fields.yearCompassPurpose.value.trim();
       const missionText = fields.yearCompassMission.value.trim();
-      const payload = { ...loadedStrategyEntry,
+      const payload = {
         identitaet: fields.yearCompassIdentity.value.trim(),
         lebenssinn_mission: [purposeText, missionText].filter(Boolean).join('\n\n'),
         werte_rollen_glaubenssaetze: fields.yearCompassValues.value.trim(),
@@ -1154,81 +1194,12 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       fields.missionBlock.value = fields.yearCompassMission.value;
       fields.valuesBlock.value = fields.yearCompassValues.value;
     }
-    function syncMainGoalMirrors() {
-      fields.goalLong10Mirror.value = fields.goalLong10.value;
-      fields.goalMid25Mirror.value = fields.goalMid25.value;
-      fields.goalShort1Mirror.value = fields.goalShort1.value;
-    }
     function getCurrentStrategyWeekStart() {
       return getStartOfWeek(fields.date.value || todayString());
     }
-    function splitLegacyPurposeMission(value) {
-      const normalized = String(value || '').replace(/\r\n?/g, '\n');
-      const parts = normalized.split(/\n\s*\n/).map(part => part.trim()).filter(Boolean);
-      if (parts.length <= 1) return { purpose: normalized.trim(), mission: '' };
-      return { purpose: parts[0], mission: parts.slice(1).join('\n\n') };
-    }
-    const DRAFT_STORAGE_PREFIX = 'chancenplaner-draft-v1';
-    function getDraftKey(section, scope = 'default') {
-      const userId = currentSession?.user?.id || 'anonymous';
-      return `${DRAFT_STORAGE_PREFIX}:${userId}:${section}:${scope}`;
-    }
-    function readDraft(section, scope = 'default', serverUpdatedAt = null) {
-      try {
-        const raw = localStorage.getItem(getDraftKey(section, scope));
-        if (!raw) return null;
-        const parsed = JSON.parse(raw);
-        if (!parsed || typeof parsed !== 'object') return null;
-        if (isDraftOutdated(parsed.savedAt, serverUpdatedAt)) {
-          clearDraft(section, scope);
-          return null;
-        }
-        return parsed.data || null;
-      } catch (error) {
-        return null;
-      }
-    }
-    function isDraftOutdated(draftSavedAt, serverUpdatedAt) {
-      if (!serverUpdatedAt || !draftSavedAt) return false;
-      const draftTime = Date.parse(draftSavedAt);
-      const serverTime = Date.parse(serverUpdatedAt);
-      if (Number.isNaN(draftTime) || Number.isNaN(serverTime)) return false;
-      return draftTime <= serverTime;
-    }
-    function writeDraft(section, scope, payload) {
-      try {
-        localStorage.setItem(getDraftKey(section, scope), JSON.stringify({ savedAt: new Date().toISOString(), data: payload }));
-      } catch (error) {}
-    }
-    function clearDraft(section, scope = 'default') {
-      try {
-        localStorage.removeItem(getDraftKey(section, scope));
-      } catch (error) {}
-    }
-    function persistStrategyDraft() {
-      writeDraft('strategy', 'default', strategyPayload());
-    }
-    function persistDailyDraft(dateStr = fields.date.value) {
-      if (!dateStr) return;
-      writeDraft('daily', dateStr, dailyPayload(dateStr));
-    }
-    function persistWeeklyDraft(dateStr = fields.date.value || todayString()) {
-      if (!dateStr) return;
-      writeDraft('weekly', getStartOfWeek(dateStr), weeklyPayload(dateStr));
-    }
-    function persistVisibleDrafts() {
-      if (!appInitialized) return;
-      const dateStr = fields.date.value || todayString();
-      persistStrategyDraft();
-      persistDailyDraft(dateStr);
-      persistWeeklyDraft(dateStr);
-    }
     async function loadStrategy(dateStr = getCurrentStrategyWeekStart()) {
-      const { data: remoteEntry, updatedAt } = await api('/api/strategy');
-      const persistedDraft = readDraft('strategy', 'default', updatedAt);
-      let entry = persistedDraft ? { ...remoteEntry, ...persistedDraft } : remoteEntry;
-      strategyDefaults = { ...entry };
-      loadedStrategyEntry = { ...entry };
+      const entry = await api('/api/strategy');
+      strategyDefaults = entry;
       fields.goalLong10.value = entry.langfristige_ziele_10_jahre || '';
       fields.goal10Date.value = entry.ziele_10_datum || '';
       fields.goal10Being.value = entry.ziele_10_sein || '';
@@ -1259,31 +1230,22 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       yearPlanningFields.forEach(key => {
         fields[key].value = entry[`jahresplanung_${key}`] || '';
       });
-      const legacyPurposeMission = splitLegacyPurposeMission(entry.lebenssinn_mission);
       fields.yearCompassIdentity.value = entry.jahresplanung_yearCompassIdentity || entry.identitaet || '';
-      fields.yearCompassPurpose.value = entry.jahresplanung_yearCompassPurpose || legacyPurposeMission.purpose || '';
-      fields.yearCompassMission.value = entry.jahresplanung_yearCompassMission || legacyPurposeMission.mission || '';
-      fields.yearCompassValues.value = entry.jahresplanung_yearCompassValues || entry.jahresplanung_yearCompassBeliefs || entry.werte_rollen_glaubenssaetze || '';
+      fields.yearCompassPurpose.value = entry.jahresplanung_yearCompassPurpose || entry.lebenssinn_mission || '';
+      fields.yearCompassMission.value = entry.jahresplanung_yearCompassMission || '';
+      fields.yearCompassValues.value = entry.jahresplanung_yearCompassValues || entry.werte_rollen_glaubenssaetze || '';
       syncMainCompassMirrors();
-      syncMainGoalMirrors();
       await loadWeeklyEntry(dateStr);
     }
-    async function saveStrategy(options = {}) {
-      const payload = strategyPayload();
-      await api('/api/strategy', { method: 'PUT', body: JSON.stringify(payload) });
-      loadedStrategyEntry = { ...payload };
-      clearDraft('strategy', 'default');
-      if (!options.silent) showStatus('Strategieblock gespeichert');
+    async function saveStrategy() {
+      await api('/api/strategy', { method: 'PUT', body: JSON.stringify(strategyPayload()) });
+      showStatus('Strategieblock gespeichert');
     }
     async function loadEntry(dateStr) {
       clearDailyFormOnly();
       renderLaw(dateStr);
-      loadedDailyEntry = {};
       try {
-        const { data: remoteEntry, updatedAt } = await api(`/api/entries/${dateStr}`);
-        const persistedDraft = readDraft('daily', dateStr, updatedAt);
-        const entry = persistedDraft ? { ...remoteEntry, ...persistedDraft } : remoteEntry;
-        loadedDailyEntry = { ...entry };
+        const entry = await api(`/api/entries/${dateStr}`);
         fields.chance.value = entry.chance_des_tages || '';
         fields.gratitude.value = entry.dankbarkeit || '';
         fields.task.value = entry.wichtigste_aufgabe_602020 || '';
@@ -1296,38 +1258,20 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
         fields.success5.value = entry.erfolg_5 || '';
       } catch (error) {
         if (!String(error.message).includes('not found')) throw error;
-        const persistedDraft = readDraft('daily', dateStr);
-        if (persistedDraft) {
-          loadedDailyEntry = { ...persistedDraft };
-          fields.chance.value = persistedDraft.chance_des_tages || '';
-          fields.gratitude.value = persistedDraft.dankbarkeit || '';
-          fields.task.value = persistedDraft.wichtigste_aufgabe_602020 || '';
-          fields.success1.value = persistedDraft.erfolg_1 || '';
-          fields.success2.value = persistedDraft.erfolg_2 || '';
-          fields.success3.value = persistedDraft.erfolg_3 || '';
-          fields.success4.value = persistedDraft.erfolg_4 || '';
-          fields.success5.value = persistedDraft.erfolg_5 || '';
-        }
         if (!fields.task.value.trim()) syncTaskFromWeeklyPlan(dateStr);
       }
     }
     function dailyPayload(dateStr) {
       const law = renderLaw(dateStr);
       return {
-        ...loadedDailyEntry,
         datum: dateStr,
         tag_im_zyklus: law.cycleDay,
         gesetz_index: law.lawIndex,
         gesetz_titel: law.title,
         gesetz_text: law.text,
-        gesetz_heute_umsetzung: loadedDailyEntry.gesetz_heute_umsetzung || '',
         chance_des_tages: fields.chance.value.trim(),
         dankbarkeit: fields.gratitude.value.trim(),
         wichtigste_aufgabe_602020: fields.task.value.trim(),
-        reflexion_aufgabe_status: loadedDailyEntry.reflexion_aufgabe_status || '',
-        reflexion_aufgabe_warum: loadedDailyEntry.reflexion_aufgabe_warum || '',
-        reflexion_gesetz_status: loadedDailyEntry.reflexion_gesetz_status || '',
-        reflexion_gesetz_warum: loadedDailyEntry.reflexion_gesetz_warum || '',
         erfolg_1: fields.success1.value.trim(),
         erfolg_2: fields.success2.value.trim(),
         erfolg_3: fields.success3.value.trim(),
@@ -1345,7 +1289,6 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
         };
       });
       return {
-        ...loadedWeeklyEntry,
         week_start: weekStart,
         motto_langfristig: fields.mottoLong.value.trim(),
         fokus_woche: fields.focusWeek.value.trim(),
@@ -1371,30 +1314,20 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     }
     async function loadWeeklyEntry(dateStr) {
       clearWeeklyFormOnly();
-      loadedWeeklyEntry = {};
       const weekStart = getStartOfWeek(dateStr);
       weeklyViewTitle.textContent = formatWeekRange(weekStart);
       weeklySundayLabel.textContent = formatSundayLabel(weekStart);
       strategyWeekLabel.textContent = formatWeekLabel(weekStart);
       applyWeeklyEntry();
       try {
-        const { data: remoteEntry, updatedAt } = await api(`/api/weekly/${weekStart}`);
-        const persistedDraft = readDraft('weekly', weekStart, updatedAt);
-        const entry = persistedDraft ? { ...remoteEntry, ...persistedDraft } : remoteEntry;
-        loadedWeeklyEntry = { ...entry };
+        const entry = await api(`/api/weekly/${weekStart}`);
         applyWeeklyEntry(entry);
       } catch (error) {
         if (!String(error.message).includes('not found')) throw error;
-        const persistedDraft = readDraft('weekly', weekStart);
-        if (persistedDraft) {
-          loadedWeeklyEntry = { ...persistedDraft };
-          applyWeeklyEntry(persistedDraft);
-        }
       }
       syncTaskFromWeeklyPlan(dateStr);
     }
     async function setCurrentDate(dateStr) {
-      await flushPendingSaves();
       fields.date.value = dateStr;
       await loadWeeklyEntry(dateStr);
       await loadEntry(dateStr);
@@ -1412,24 +1345,24 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       currentDate.setDate(currentDate.getDate() + (weeks * 7));
       await setStrategyWeek(isoDate(currentDate));
     }
-    async function saveEntry(options = {}) {
+    async function saveEntry() {
       const dateStr = fields.date.value;
       if (!dateStr) return;
-      if (!Object.keys(loadedDailyEntry).length && ![fields.chance.value.trim(), fields.gratitude.value.trim(), fields.task.value.trim(), fields.success1.value.trim(), fields.success2.value.trim(), fields.success3.value.trim(), fields.success4.value.trim(), fields.success5.value.trim()].some(Boolean)) return;
-      const payload = dailyPayload(dateStr);
-      await api(`/api/entries/${dateStr}`, { method: 'PUT', body: JSON.stringify(payload) });
-      loadedDailyEntry = { ...payload };
-      clearDraft('daily', dateStr);
-      if (!options.silent) showStatus(`Automatisch gespeichert: ${formatGermanDate(dateStr)}`);
+      await api(`/api/entries/${dateStr}`, { method: 'PUT', body: JSON.stringify(dailyPayload(dateStr)) });
+      showStatus(`Automatisch gespeichert: ${formatGermanDate(dateStr)}`);
     }
-    async function saveWeeklyEntry(options = {}) {
+    async function saveWeeklyEntry() {
       const dateStr = fields.date.value || todayString();
-      if (!Object.keys(loadedWeeklyEntry).length && ![fields.mottoLong.value.trim(), fields.focusWeek.value.trim(), fields.priorityWeek.value.trim(), fields.weeklyHealth.value.trim(), fields.weeklyRelationships.value.trim(), fields.weeklyFinances.value.trim(), fields.weeklyEmotions.value.trim(), fields.weeklyPurpose.value.trim(), ...weeklyEntryFields.map(key => fields[key].value.trim())].some(Boolean)) return;
-      const payload = weeklyPayload(dateStr);
-      await api(`/api/weekly/${getStartOfWeek(dateStr)}`, { method: 'PUT', body: JSON.stringify(payload) });
-      loadedWeeklyEntry = { ...payload };
-      clearDraft('weekly', getStartOfWeek(dateStr));
-      if (!options.silent) showStatus(`Woche gespeichert: ${formatWeekRange(dateStr)}`);
+      await api(`/api/weekly/${getStartOfWeek(dateStr)}`, { method: 'PUT', body: JSON.stringify(weeklyPayload(dateStr)) });
+      showStatus(`Woche gespeichert: ${formatWeekRange(dateStr)}`);
+    }
+    async function clearCurrentDay() {
+      const dateStr = fields.date.value;
+      if (!dateStr) return;
+      await api(`/api/entries/${dateStr}`, { method: 'DELETE' });
+      clearDailyFormOnly();
+      renderLaw(dateStr);
+      showStatus(`Eintrag gelöscht: ${formatGermanDate(dateStr)}`);
     }
     let activeEditor = null;
     const EDITOR_BLOCK_TAGS = new Set(['ADDRESS', 'ARTICLE', 'ASIDE', 'BLOCKQUOTE', 'DIV', 'FIGCAPTION', 'FIGURE', 'FOOTER', 'HEADER', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'MAIN', 'NAV', 'P', 'PRE', 'SECTION']);
@@ -1510,6 +1443,15 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
         });
       });
     }
+    function openGoalDetail(detailEl) {
+      document.querySelectorAll('.goal-detail-page').forEach(page => { page.style.display = page === detailEl ? 'block' : 'none'; });
+      const isVisible = Boolean(detailEl);
+      dailyMainContent.style.display = isVisible ? 'none' : 'block';
+      if (isVisible) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function closeGoalDetail() {
+      openGoalDetail(null);
+    }
     function setWeeklyTipsVisible(isVisible) {
       if (weeklyTipsPanel) weeklyTipsPanel.style.display = isVisible ? 'block' : 'none';
       weeklyOverviewCard.style.display = isVisible ? 'none' : 'block';
@@ -1556,35 +1498,27 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     let strategyAutosaveTimer;
     let dailyAutosaveTimer;
     let weeklyAutosaveTimer;
-    const AUTOSAVE_DELAY_MS = 800;
-    async function flushPendingSaves() {
-      if (!appInitialized) return;
-      clearTimeout(strategyAutosaveTimer);
-      clearTimeout(dailyAutosaveTimer);
-      clearTimeout(weeklyAutosaveTimer);
-      const results = await Promise.allSettled([saveStrategy({ silent: true }), saveEntry({ silent: true }), saveWeeklyEntry({ silent: true })]);
-      const failedSaves = results.filter(result => result.status === 'rejected');
-      if (failedSaves.length) throw failedSaves[0].reason || new Error('Autosave fehlgeschlagen');
-    }
     function scheduleStrategyAutosave() {
-      persistStrategyDraft();
       clearTimeout(strategyAutosaveTimer);
-      strategyAutosaveTimer = setTimeout(() => saveStrategy({ silent: true }).catch(error => showStatus(`Fehler: ${error.message}`, true)), AUTOSAVE_DELAY_MS);
+      strategyAutosaveTimer = setTimeout(() => saveStrategy().catch(error => showStatus(`Fehler: ${error.message}`, true)), 300000);
     }
     function scheduleDailyAutosave() {
-      persistDailyDraft();
       clearTimeout(dailyAutosaveTimer);
-      dailyAutosaveTimer = setTimeout(() => saveEntry({ silent: true }).catch(error => showStatus(`Fehler: ${error.message}`, true)), AUTOSAVE_DELAY_MS);
+      dailyAutosaveTimer = setTimeout(() => saveEntry().catch(error => showStatus(`Fehler: ${error.message}`, true)), 300000);
     }
     function scheduleWeeklyAutosave() {
-      persistWeeklyDraft();
       clearTimeout(weeklyAutosaveTimer);
-      weeklyAutosaveTimer = setTimeout(() => saveWeeklyEntry({ silent: true }).catch(error => showStatus(`Fehler: ${error.message}`, true)), AUTOSAVE_DELAY_MS);
+      weeklyAutosaveTimer = setTimeout(() => saveWeeklyEntry().catch(error => showStatus(`Fehler: ${error.message}`, true)), 300000);
     }
     initRichTextEditors();
+    openTenYearGoalsBtn.addEventListener('click', () => openGoalDetail(tenYearGoalsDetail));
+    openMidTermGoalsBtn.addEventListener('click', () => openGoalDetail(midTermGoalsDetail));
+    openShortTermGoalsBtn.addEventListener('click', () => openGoalDetail(shortTermGoalsDetail));
+    closeTenYearGoalsBtn.addEventListener('click', () => closeGoalDetail());
+    closeMidTermGoalsBtn.addEventListener('click', () => closeGoalDetail());
+    closeShortTermGoalsBtn.addEventListener('click', () => closeGoalDetail());
     fields.date.addEventListener('change', async () => {
       try {
-        await flushPendingSaves();
         await setCurrentDate(fields.date.value);
       } catch (error) {
         showStatus(`Fehler: ${error.message}`, true);
@@ -1593,7 +1527,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     weekToggleBtn.addEventListener('click', () => {
       const nextView = currentView === 'weekly' ? 'daily' : 'weekly';
       setView(nextView);
-      if (nextView === 'weekly') flushPendingSaves().then(() => loadWeeklyEntry(fields.date.value || todayString())).catch(error => showStatus(`Fehler: ${error.message}`, true));
+      if (nextView === 'weekly') loadWeeklyEntry(fields.date.value || todayString()).catch(error => showStatus(`Fehler: ${error.message}`, true));
     });
     yearPlanToggleBtn.addEventListener('click', () => {
       setView(currentView === 'year' ? 'daily' : 'year');
@@ -1602,7 +1536,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       btn.addEventListener('click', () => setYearPlanningSection(btn.dataset.yearSection));
     });
     prevDayBtn.addEventListener('click', () => shiftCurrentDate(-1).catch(error => showStatus(`Fehler: ${error.message}`, true)));
-    todayBtn.addEventListener('click', () => flushPendingSaves().then(() => setCurrentDate(todayString())).catch(error => showStatus(`Fehler: ${error.message}`, true)));
+    todayBtn.addEventListener('click', () => setCurrentDate(todayString()).catch(error => showStatus(`Fehler: ${error.message}`, true)));
     nextDayBtn.addEventListener('click', () => shiftCurrentDate(1).catch(error => showStatus(`Fehler: ${error.message}`, true)));
     strategyWeekPrevBtn.addEventListener('click', () => shiftStrategyWeek(-1).catch(error => showStatus(`Fehler: ${error.message}`, true)));
     strategyWeekNextBtn.addEventListener('click', () => shiftStrategyWeek(1).catch(error => showStatus(`Fehler: ${error.message}`, true)));
@@ -1632,12 +1566,6 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       el.addEventListener('input', syncMainCompassMirrors);
       el.addEventListener('change', syncMainCompassMirrors);
     });
-    ['goalLong10', 'goalMid25', 'goalShort1'].forEach(key => {
-      const el = fields[key];
-      if (!el) return;
-      el.addEventListener('input', syncMainGoalMirrors);
-      el.addEventListener('change', syncMainGoalMirrors);
-    });
     Object.entries(fields).forEach(([key, el]) => {
       if (!el || key === 'date' || key === 'displayDate') return;
       let handler = scheduleDailyAutosave;
@@ -1650,33 +1578,19 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
         el.addEventListener('change', () => syncTaskFromWeeklyPlan(fields.date.value));
       }
     });
-    window.addEventListener('beforeunload', () => {
-      persistVisibleDrafts();
-    });
-    window.addEventListener('pagehide', () => {
-      persistVisibleDrafts();
-      flushPendingSaves().catch(() => {});
-    });
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState !== 'hidden') return;
-      persistVisibleDrafts();
-      flushPendingSaves().catch(() => {});
-    });
     async function initAuthenticatedApp() {
       if (appInitialized) return;
       fields.date.value = todayString();
       setView(false);
       await loadStrategy(fields.date.value);
-      await setCurrentDate(fields.date.value);
+      await loadEntry(fields.date.value);
       appInitialized = true;
     }
     async function applySession(session) {
       currentSession = session || null;
       const isLoggedIn = Boolean(currentSession?.user);
-      recoveryCard.classList.toggle('hidden', !recoveryMode);
-      authCard.classList.toggle('hidden', isLoggedIn || recoveryMode);
-      appShell.classList.toggle('hidden', !isLoggedIn || recoveryMode);
-      if (recoveryMode) return;
+      authCard.classList.toggle('hidden', isLoggedIn);
+      appShell.classList.toggle('hidden', !isLoggedIn);
       if (!isLoggedIn) {
         appInitialized = false;
         return;
@@ -1691,40 +1605,22 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       if (error) return showStatus(`Login fehlgeschlagen: ${error.message}`, true);
       showStatus('Eingeloggt');
     }
-    async function handlePasswordReset() {
+    async function handleSignup() {
       const email = document.getElementById('email').value.trim();
-      if (!email) return showStatus('Bitte zuerst die E-Mail-Adresse eintragen', true);
-      const redirectTo = `${window.location.origin}${window.location.pathname}`;
-      const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo });
-      if (error) return showStatus(`Zurücksetzen fehlgeschlagen: ${error.message}`, true);
-      showStatus('E-Mail verschickt. Öffne den Link darin, um ein neues Passwort zu setzen.');
-    }
-    async function handleSetNewPassword() {
-      const password = document.getElementById('newPassword').value;
-      if (password.length < 6) return showStatus('Das Passwort braucht mindestens 6 Zeichen', true);
-      const { error } = await supabaseClient.auth.updateUser({ password });
-      if (error) return showStatus(`Passwort nicht gespeichert: ${error.message}`, true);
-      document.getElementById('newPassword').value = '';
-      recoveryMode = false;
-      showStatus('Neues Passwort gespeichert');
-      await applySession(currentSession);
+      const password = document.getElementById('password').value;
+      const { error } = await supabaseClient.auth.signUp({ email, password });
+      if (error) return showStatus(`Signup fehlgeschlagen: ${error.message}`, true);
+      showStatus('Account angelegt. Falls Supabase E-Mail-Bestätigung aktiviert ist, bestätige die Mail.');
     }
     async function handleLogout() {
-      try {
-        await flushPendingSaves();
-      } catch (error) {
-        return showStatus(`Speichern vor Logout fehlgeschlagen: ${error.message}`, true);
-      }
       const { error } = await supabaseClient.auth.signOut();
       if (error) return showStatus(`Logout fehlgeschlagen: ${error.message}`, true);
       showStatus('Ausgeloggt');
     }
     loginForm.addEventListener('submit', event => handleLogin(event));
-    forgotPasswordBtn.addEventListener('click', () => handlePasswordReset());
-    setNewPasswordBtn.addEventListener('click', () => handleSetNewPassword());
+    signupBtn.addEventListener('click', () => handleSignup());
     logoutBtn.addEventListener('click', () => handleLogout());
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') recoveryMode = true;
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
       applySession(session).catch(error => showStatus(`Fehler: ${error.message}`, true));
     });
     supabaseClient.auth.getSession().then(({ data, error }) => {

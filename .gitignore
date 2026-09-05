@@ -16,8 +16,9 @@ venv/
 *.sqlite
 *.sqlite3
 
-# Lokale Fehlkopie, nicht versionieren
-/dev/tests/index.html
+# Manuelle Sicherungskopien gehoeren in die Git-Historie, nicht in den Baum
+*.bak_*
+index_before_*.html
 
 # Secrets / lokale Umgebungen
 .env

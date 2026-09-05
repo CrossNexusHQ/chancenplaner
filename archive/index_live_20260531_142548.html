@@ -123,25 +123,9 @@
         </div>
         <div class="auth-actions">
           <button type="submit" id="loginBtn">Einloggen</button>
-          <button type="button" class="ghost" id="forgotPasswordBtn">Passwort vergessen</button>
+          <button type="button" class="ghost" id="signupBtn">Account anlegen</button>
         </div>
       </form>
-    </div>
-
-    <div class="card auth-card hidden" id="recoveryCard">
-      <div>
-        <h2 style="margin-bottom:8px;">Neues Passwort setzen</h2>
-        <div class="muted">Vergib jetzt ein neues Passwort. Danach bist du direkt eingeloggt.</div>
-      </div>
-      <div class="auth-row">
-        <div>
-          <label for="newPassword">Neues Passwort</label>
-          <input id="newPassword" type="password" autocomplete="new-password">
-        </div>
-      </div>
-      <div class="auth-actions">
-        <button type="button" id="setNewPasswordBtn">Passwort speichern</button>
-      </div>
     </div>
 
     <div class="status" id="statusBox"></div>
@@ -876,9 +860,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     const authCard = document.getElementById('authCard');
     const appShell = document.getElementById('appShell');
     const loginForm = document.getElementById('loginForm');
-    const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
-    const recoveryCard = document.getElementById('recoveryCard');
-    const setNewPasswordBtn = document.getElementById('setNewPasswordBtn');
+    const signupBtn = document.getElementById('signupBtn');
     const logoutBtn = document.getElementById('logoutBtn');
 
     const supabaseUrl = window.CHANCENPLANER_CONFIG?.supabaseUrl;
@@ -890,7 +872,6 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
     let currentSession = null;
     let appInitialized = false;
-    let recoveryMode = false;
     let strategyDefaults = {};
     let loadedStrategyEntry = {};
     let loadedDailyEntry = {};
@@ -900,7 +881,8 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     ]);
 
     function todayString() {
-      return isoDate(new Date());
+      const d = new Date();
+      return d.toISOString().slice(0, 10);
     }
     function dayDiff(start, current) {
       const a = new Date(start + 'T00:00:00');
@@ -1048,12 +1030,12 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       await requireSession();
       const { data, error } = await supabaseClient
         .from(table)
-        .select('data, updated_at')
+        .select('data')
         .eq(column, value)
         .maybeSingle();
       if (error) throw error;
       if (!data) throw new Error('not found');
-      return { data: data.data || {}, updatedAt: data.updated_at || null };
+      return data.data || {};
     }
     async function upsertJsonRecord(table, column, value, payload, idValue = null) {
       await requireSession();
@@ -1088,7 +1070,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
           try {
             return await loadJsonRecord('strategy_profiles_v4', 'id', 'default');
           } catch (error) {
-            if (String(error.message).includes('not found')) return { data: {}, updatedAt: null };
+            if (String(error.message).includes('not found')) return {};
             throw error;
           }
         }
@@ -1168,66 +1150,9 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       if (parts.length <= 1) return { purpose: normalized.trim(), mission: '' };
       return { purpose: parts[0], mission: parts.slice(1).join('\n\n') };
     }
-    const DRAFT_STORAGE_PREFIX = 'chancenplaner-draft-v1';
-    function getDraftKey(section, scope = 'default') {
-      const userId = currentSession?.user?.id || 'anonymous';
-      return `${DRAFT_STORAGE_PREFIX}:${userId}:${section}:${scope}`;
-    }
-    function readDraft(section, scope = 'default', serverUpdatedAt = null) {
-      try {
-        const raw = localStorage.getItem(getDraftKey(section, scope));
-        if (!raw) return null;
-        const parsed = JSON.parse(raw);
-        if (!parsed || typeof parsed !== 'object') return null;
-        if (isDraftOutdated(parsed.savedAt, serverUpdatedAt)) {
-          clearDraft(section, scope);
-          return null;
-        }
-        return parsed.data || null;
-      } catch (error) {
-        return null;
-      }
-    }
-    function isDraftOutdated(draftSavedAt, serverUpdatedAt) {
-      if (!serverUpdatedAt || !draftSavedAt) return false;
-      const draftTime = Date.parse(draftSavedAt);
-      const serverTime = Date.parse(serverUpdatedAt);
-      if (Number.isNaN(draftTime) || Number.isNaN(serverTime)) return false;
-      return draftTime <= serverTime;
-    }
-    function writeDraft(section, scope, payload) {
-      try {
-        localStorage.setItem(getDraftKey(section, scope), JSON.stringify({ savedAt: new Date().toISOString(), data: payload }));
-      } catch (error) {}
-    }
-    function clearDraft(section, scope = 'default') {
-      try {
-        localStorage.removeItem(getDraftKey(section, scope));
-      } catch (error) {}
-    }
-    function persistStrategyDraft() {
-      writeDraft('strategy', 'default', strategyPayload());
-    }
-    function persistDailyDraft(dateStr = fields.date.value) {
-      if (!dateStr) return;
-      writeDraft('daily', dateStr, dailyPayload(dateStr));
-    }
-    function persistWeeklyDraft(dateStr = fields.date.value || todayString()) {
-      if (!dateStr) return;
-      writeDraft('weekly', getStartOfWeek(dateStr), weeklyPayload(dateStr));
-    }
-    function persistVisibleDrafts() {
-      if (!appInitialized) return;
-      const dateStr = fields.date.value || todayString();
-      persistStrategyDraft();
-      persistDailyDraft(dateStr);
-      persistWeeklyDraft(dateStr);
-    }
     async function loadStrategy(dateStr = getCurrentStrategyWeekStart()) {
-      const { data: remoteEntry, updatedAt } = await api('/api/strategy');
-      const persistedDraft = readDraft('strategy', 'default', updatedAt);
-      let entry = persistedDraft ? { ...remoteEntry, ...persistedDraft } : remoteEntry;
-      strategyDefaults = { ...entry };
+      const entry = await api('/api/strategy');
+      strategyDefaults = entry;
       loadedStrategyEntry = { ...entry };
       fields.goalLong10.value = entry.langfristige_ziele_10_jahre || '';
       fields.goal10Date.value = entry.ziele_10_datum || '';
@@ -1269,10 +1194,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       await loadWeeklyEntry(dateStr);
     }
     async function saveStrategy(options = {}) {
-      const payload = strategyPayload();
-      await api('/api/strategy', { method: 'PUT', body: JSON.stringify(payload) });
-      loadedStrategyEntry = { ...payload };
-      clearDraft('strategy', 'default');
+      await api('/api/strategy', { method: 'PUT', body: JSON.stringify(strategyPayload()) });
       if (!options.silent) showStatus('Strategieblock gespeichert');
     }
     async function loadEntry(dateStr) {
@@ -1280,9 +1202,7 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       renderLaw(dateStr);
       loadedDailyEntry = {};
       try {
-        const { data: remoteEntry, updatedAt } = await api(`/api/entries/${dateStr}`);
-        const persistedDraft = readDraft('daily', dateStr, updatedAt);
-        const entry = persistedDraft ? { ...remoteEntry, ...persistedDraft } : remoteEntry;
+        const entry = await api(`/api/entries/${dateStr}`);
         loadedDailyEntry = { ...entry };
         fields.chance.value = entry.chance_des_tages || '';
         fields.gratitude.value = entry.dankbarkeit || '';
@@ -1296,18 +1216,6 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
         fields.success5.value = entry.erfolg_5 || '';
       } catch (error) {
         if (!String(error.message).includes('not found')) throw error;
-        const persistedDraft = readDraft('daily', dateStr);
-        if (persistedDraft) {
-          loadedDailyEntry = { ...persistedDraft };
-          fields.chance.value = persistedDraft.chance_des_tages || '';
-          fields.gratitude.value = persistedDraft.dankbarkeit || '';
-          fields.task.value = persistedDraft.wichtigste_aufgabe_602020 || '';
-          fields.success1.value = persistedDraft.erfolg_1 || '';
-          fields.success2.value = persistedDraft.erfolg_2 || '';
-          fields.success3.value = persistedDraft.erfolg_3 || '';
-          fields.success4.value = persistedDraft.erfolg_4 || '';
-          fields.success5.value = persistedDraft.erfolg_5 || '';
-        }
         if (!fields.task.value.trim()) syncTaskFromWeeklyPlan(dateStr);
       }
     }
@@ -1378,18 +1286,11 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       strategyWeekLabel.textContent = formatWeekLabel(weekStart);
       applyWeeklyEntry();
       try {
-        const { data: remoteEntry, updatedAt } = await api(`/api/weekly/${weekStart}`);
-        const persistedDraft = readDraft('weekly', weekStart, updatedAt);
-        const entry = persistedDraft ? { ...remoteEntry, ...persistedDraft } : remoteEntry;
+        const entry = await api(`/api/weekly/${weekStart}`);
         loadedWeeklyEntry = { ...entry };
         applyWeeklyEntry(entry);
       } catch (error) {
         if (!String(error.message).includes('not found')) throw error;
-        const persistedDraft = readDraft('weekly', weekStart);
-        if (persistedDraft) {
-          loadedWeeklyEntry = { ...persistedDraft };
-          applyWeeklyEntry(persistedDraft);
-        }
       }
       syncTaskFromWeeklyPlan(dateStr);
     }
@@ -1416,20 +1317,22 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       const dateStr = fields.date.value;
       if (!dateStr) return;
       if (!Object.keys(loadedDailyEntry).length && ![fields.chance.value.trim(), fields.gratitude.value.trim(), fields.task.value.trim(), fields.success1.value.trim(), fields.success2.value.trim(), fields.success3.value.trim(), fields.success4.value.trim(), fields.success5.value.trim()].some(Boolean)) return;
-      const payload = dailyPayload(dateStr);
-      await api(`/api/entries/${dateStr}`, { method: 'PUT', body: JSON.stringify(payload) });
-      loadedDailyEntry = { ...payload };
-      clearDraft('daily', dateStr);
+      await api(`/api/entries/${dateStr}`, { method: 'PUT', body: JSON.stringify(dailyPayload(dateStr)) });
       if (!options.silent) showStatus(`Automatisch gespeichert: ${formatGermanDate(dateStr)}`);
     }
     async function saveWeeklyEntry(options = {}) {
       const dateStr = fields.date.value || todayString();
       if (!Object.keys(loadedWeeklyEntry).length && ![fields.mottoLong.value.trim(), fields.focusWeek.value.trim(), fields.priorityWeek.value.trim(), fields.weeklyHealth.value.trim(), fields.weeklyRelationships.value.trim(), fields.weeklyFinances.value.trim(), fields.weeklyEmotions.value.trim(), fields.weeklyPurpose.value.trim(), ...weeklyEntryFields.map(key => fields[key].value.trim())].some(Boolean)) return;
-      const payload = weeklyPayload(dateStr);
-      await api(`/api/weekly/${getStartOfWeek(dateStr)}`, { method: 'PUT', body: JSON.stringify(payload) });
-      loadedWeeklyEntry = { ...payload };
-      clearDraft('weekly', getStartOfWeek(dateStr));
+      await api(`/api/weekly/${getStartOfWeek(dateStr)}`, { method: 'PUT', body: JSON.stringify(weeklyPayload(dateStr)) });
       if (!options.silent) showStatus(`Woche gespeichert: ${formatWeekRange(dateStr)}`);
+    }
+    async function clearCurrentDay() {
+      const dateStr = fields.date.value;
+      if (!dateStr) return;
+      await api(`/api/entries/${dateStr}`, { method: 'DELETE' });
+      clearDailyFormOnly();
+      renderLaw(dateStr);
+      showStatus(`Eintrag gelöscht: ${formatGermanDate(dateStr)}`);
     }
     let activeEditor = null;
     const EDITOR_BLOCK_TAGS = new Set(['ADDRESS', 'ARTICLE', 'ASIDE', 'BLOCKQUOTE', 'DIV', 'FIGCAPTION', 'FIGURE', 'FOOTER', 'HEADER', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'MAIN', 'NAV', 'P', 'PRE', 'SECTION']);
@@ -1567,17 +1470,14 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       if (failedSaves.length) throw failedSaves[0].reason || new Error('Autosave fehlgeschlagen');
     }
     function scheduleStrategyAutosave() {
-      persistStrategyDraft();
       clearTimeout(strategyAutosaveTimer);
       strategyAutosaveTimer = setTimeout(() => saveStrategy({ silent: true }).catch(error => showStatus(`Fehler: ${error.message}`, true)), AUTOSAVE_DELAY_MS);
     }
     function scheduleDailyAutosave() {
-      persistDailyDraft();
       clearTimeout(dailyAutosaveTimer);
       dailyAutosaveTimer = setTimeout(() => saveEntry({ silent: true }).catch(error => showStatus(`Fehler: ${error.message}`, true)), AUTOSAVE_DELAY_MS);
     }
     function scheduleWeeklyAutosave() {
-      persistWeeklyDraft();
       clearTimeout(weeklyAutosaveTimer);
       weeklyAutosaveTimer = setTimeout(() => saveWeeklyEntry({ silent: true }).catch(error => showStatus(`Fehler: ${error.message}`, true)), AUTOSAVE_DELAY_MS);
     }
@@ -1650,18 +1550,6 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
         el.addEventListener('change', () => syncTaskFromWeeklyPlan(fields.date.value));
       }
     });
-    window.addEventListener('beforeunload', () => {
-      persistVisibleDrafts();
-    });
-    window.addEventListener('pagehide', () => {
-      persistVisibleDrafts();
-      flushPendingSaves().catch(() => {});
-    });
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState !== 'hidden') return;
-      persistVisibleDrafts();
-      flushPendingSaves().catch(() => {});
-    });
     async function initAuthenticatedApp() {
       if (appInitialized) return;
       fields.date.value = todayString();
@@ -1673,10 +1561,8 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
     async function applySession(session) {
       currentSession = session || null;
       const isLoggedIn = Boolean(currentSession?.user);
-      recoveryCard.classList.toggle('hidden', !recoveryMode);
-      authCard.classList.toggle('hidden', isLoggedIn || recoveryMode);
-      appShell.classList.toggle('hidden', !isLoggedIn || recoveryMode);
-      if (recoveryMode) return;
+      authCard.classList.toggle('hidden', isLoggedIn);
+      appShell.classList.toggle('hidden', !isLoggedIn);
       if (!isLoggedIn) {
         appInitialized = false;
         return;
@@ -1691,23 +1577,12 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       if (error) return showStatus(`Login fehlgeschlagen: ${error.message}`, true);
       showStatus('Eingeloggt');
     }
-    async function handlePasswordReset() {
+    async function handleSignup() {
       const email = document.getElementById('email').value.trim();
-      if (!email) return showStatus('Bitte zuerst die E-Mail-Adresse eintragen', true);
-      const redirectTo = `${window.location.origin}${window.location.pathname}`;
-      const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo });
-      if (error) return showStatus(`Zurücksetzen fehlgeschlagen: ${error.message}`, true);
-      showStatus('E-Mail verschickt. Öffne den Link darin, um ein neues Passwort zu setzen.');
-    }
-    async function handleSetNewPassword() {
-      const password = document.getElementById('newPassword').value;
-      if (password.length < 6) return showStatus('Das Passwort braucht mindestens 6 Zeichen', true);
-      const { error } = await supabaseClient.auth.updateUser({ password });
-      if (error) return showStatus(`Passwort nicht gespeichert: ${error.message}`, true);
-      document.getElementById('newPassword').value = '';
-      recoveryMode = false;
-      showStatus('Neues Passwort gespeichert');
-      await applySession(currentSession);
+      const password = document.getElementById('password').value;
+      const { error } = await supabaseClient.auth.signUp({ email, password });
+      if (error) return showStatus(`Signup fehlgeschlagen: ${error.message}`, true);
+      showStatus('Account angelegt. Falls Supabase E-Mail-Bestätigung aktiviert ist, bestätige die Mail.');
     }
     async function handleLogout() {
       try {
@@ -1720,11 +1595,9 @@ const laws = [{"title": "Treffe Entscheidungen", "text": "Heute werde ich meine 
       showStatus('Ausgeloggt');
     }
     loginForm.addEventListener('submit', event => handleLogin(event));
-    forgotPasswordBtn.addEventListener('click', () => handlePasswordReset());
-    setNewPasswordBtn.addEventListener('click', () => handleSetNewPassword());
+    signupBtn.addEventListener('click', () => handleSignup());
     logoutBtn.addEventListener('click', () => handleLogout());
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') recoveryMode = true;
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
       applySession(session).catch(error => showStatus(`Fehler: ${error.message}`, true));
     });
     supabaseClient.auth.getSession().then(({ data, error }) => {

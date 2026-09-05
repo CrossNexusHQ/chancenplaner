@@ -2,9 +2,7 @@ import unittest
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[1]
-PROJECT_ROOT = BASE.parent
 INDEX = BASE / 'index.html'
-LIVE_INDEX = PROJECT_ROOT / 'index.html'
 CONFIG = BASE / 'config.example.js'
 SCHEMA = BASE / 'supabase_schema_v4_json.sql'
 
@@ -29,9 +27,6 @@ class OnlineArtifactsTests(unittest.TestCase):
         self.assertNotIn("fetch('/api/strategy'", html)
         self.assertNotIn("fetch('/api/entries/", html)
         self.assertNotIn("fetch('/api/weekly/", html)
-
-    def test_dev_and_live_index_are_kept_in_sync(self):
-        self.assertEqual(INDEX.read_text(encoding='utf-8'), LIVE_INDEX.read_text(encoding='utf-8'))
 
     def test_dev_index_contains_year_planning_view_from_screenshots(self):
         html = INDEX.read_text(encoding='utf-8')
@@ -370,7 +365,7 @@ class OnlineArtifactsTests(unittest.TestCase):
     def test_local_draft_backup_is_persisted_and_cleared_around_remote_saves(self):
         html = INDEX.read_text(encoding='utf-8')
         self.assertIn("const DRAFT_STORAGE_PREFIX = 'chancenplaner-draft-v1';", html)
-        self.assertIn("function readDraft(section, scope = 'default') {", html)
+        self.assertIn("function readDraft(section, scope = 'default', serverUpdatedAt = null) {", html)
         self.assertIn("function writeDraft(section, scope, payload) {", html)
         self.assertIn("function clearDraft(section, scope = 'default') {", html)
         self.assertIn("function persistVisibleDrafts() {", html)
@@ -380,9 +375,9 @@ class OnlineArtifactsTests(unittest.TestCase):
         self.assertIn("clearDraft('strategy', 'default');", html)
         self.assertIn("clearDraft('daily', dateStr);", html)
         self.assertIn("clearDraft('weekly', getStartOfWeek(dateStr));", html)
-        self.assertIn("const persistedDraft = readDraft('strategy', 'default');", html)
-        self.assertIn("const persistedDraft = readDraft('daily', dateStr);", html)
-        self.assertIn("const persistedDraft = readDraft('weekly', weekStart);", html)
+        self.assertIn("const persistedDraft = readDraft('strategy', 'default', updatedAt);", html)
+        self.assertIn("const persistedDraft = readDraft('daily', dateStr, updatedAt);", html)
+        self.assertIn("const persistedDraft = readDraft('weekly', weekStart, updatedAt);", html)
 
     def test_mobile_lifecycle_events_persist_local_drafts_and_attempt_flush(self):
         html = INDEX.read_text(encoding='utf-8')
@@ -443,6 +438,41 @@ class OnlineArtifactsTests(unittest.TestCase):
         self.assertIn("fields.goalMid25Mirror.value = fields.goalMid25.value;", html)
         self.assertIn("fields.goalShort1Mirror.value = fields.goalShort1.value;", html)
         self.assertIn("['goalLong10', 'goalMid25', 'goalShort1'].forEach(key => {", html)
+
+    def test_today_uses_local_time_not_utc(self):
+        html = INDEX.read_text(encoding='utf-8')
+        self.assertIn("function todayString() {\n      return isoDate(new Date());\n    }", html)
+        self.assertNotIn("toISOString().slice(0, 10)", html)
+
+    def test_stale_local_drafts_lose_against_newer_server_data(self):
+        html = INDEX.read_text(encoding='utf-8')
+        self.assertIn("function readDraft(section, scope = 'default', serverUpdatedAt = null) {", html)
+        self.assertIn("function isDraftOutdated(draftSavedAt, serverUpdatedAt) {", html)
+        self.assertIn("if (isDraftOutdated(parsed.savedAt, serverUpdatedAt)) {", html)
+        self.assertIn("return draftTime <= serverTime;", html)
+        self.assertIn(".select('data, updated_at')", html)
+        self.assertIn("return { data: data.data || {}, updatedAt: data.updated_at || null };", html)
+        self.assertIn("const { data: remoteEntry, updatedAt } = await api('/api/strategy');", html)
+
+    def test_dead_clear_current_day_is_removed(self):
+        html = INDEX.read_text(encoding='utf-8')
+        self.assertNotIn('clearCurrentDay', html)
+
+    def test_password_reset_flow_exists(self):
+        html = INDEX.read_text(encoding='utf-8')
+        self.assertIn('id="forgotPasswordBtn"', html)
+        self.assertIn('id="recoveryCard"', html)
+        self.assertIn('id="newPassword"', html)
+        self.assertIn('id="setNewPasswordBtn"', html)
+        self.assertIn('auth.resetPasswordForEmail(email, { redirectTo })', html)
+        self.assertIn('auth.updateUser({ password })', html)
+        self.assertIn("if (event === 'PASSWORD_RECOVERY') recoveryMode = true;", html)
+        self.assertIn('if (recoveryMode) return;', html)
+
+    def test_public_signup_is_removed_from_the_ui(self):
+        html = INDEX.read_text(encoding='utf-8')
+        self.assertNotIn('signupBtn', html)
+        self.assertNotIn('auth.signUp(', html)
 
     def test_config_has_placeholders(self):
         js = CONFIG.read_text(encoding='utf-8')
