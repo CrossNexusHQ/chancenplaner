@@ -508,8 +508,11 @@ class OnlineArtifactsTests(unittest.TestCase):
     def test_crossnexus_symbol_and_favicon_present(self):
         html = INDEX.read_text(encoding='utf-8')
         self.assertIn('class="brand-mark"', html)
-        self.assertIn('aria-label="CrossNexus"', html)
-        self.assertIn('<link rel="icon"', html)
+        self.assertIn('alt="CrossNexus"', html)
+        self.assertIn('src="crossnexus_logo.png"', html)
+        self.assertIn('<link rel="icon" href="favicon.png">', html)
+        for datei in ['crossnexus_logo.png', 'favicon.png']:
+            self.assertTrue((BASE / datei).exists(), f'{datei} fehlt')
         # Der Slogan steht bewusst nicht in der Oberflaeche, nur als Quellenhinweis im CSS-Kommentar
         self.assertNotIn('<div class="brand-principle">', html)
 
