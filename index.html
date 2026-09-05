@@ -84,6 +84,9 @@
     .plan-header-right { color: var(--accent); font-weight: 700; }
     .hero-line { margin-top: 8px; }
     .brand-lockup { display: flex; align-items: center; gap: 14px; }
+    /* h1 traegt sonst seinen Standard-Abstand nach unten in die Flexbox und
+       drueckt das Logo optisch tiefer als den Schriftzug */
+    .brand-lockup h1 { margin: 0; line-height: 1.1; }
     .brand-mark { flex: 0 0 auto; width: 62px; height: 44px; display: block; }
     .date-inline { display: flex; align-items: center; gap: 12px; }
     .date-inline .date-display { flex: 1; }
