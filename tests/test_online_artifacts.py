@@ -510,7 +510,8 @@ class OnlineArtifactsTests(unittest.TestCase):
         self.assertIn('class="brand-mark"', html)
         self.assertIn('aria-label="CrossNexus"', html)
         self.assertIn('<link rel="icon"', html)
-        self.assertIn('Komplex denken. Klar gestalten.', html)
+        # Der Slogan steht bewusst nicht in der Oberflaeche, nur als Quellenhinweis im CSS-Kommentar
+        self.assertNotIn('<div class="brand-principle">', html)
 
     def test_config_has_placeholders(self):
         js = CONFIG.read_text(encoding='utf-8')
